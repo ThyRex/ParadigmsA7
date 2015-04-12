@@ -1,0 +1,1 @@
+# ParadigmsA7
