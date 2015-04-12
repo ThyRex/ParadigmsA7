@@ -12,6 +12,8 @@ if(!isset($_SESSION['email'])){
 class account{
 
 }
+$accounts = array();
+$accounts = json_decode(file_get_contents("accounts.json"));
 ?>
 <html>
 <body>
@@ -40,8 +42,6 @@ If you'd like to create an account login here:<br>
 </form>
 
 <?php
-$accounts = array();
-$accounts_array = json_decode(file_get_contents("accounts.json"));
 	if(isset($_POST["register"])){
 		if(empty($_POST['name'])){
 			echo "Enter a name.";
@@ -59,15 +59,15 @@ $accounts_array = json_decode(file_get_contents("accounts.json"));
 	   	$newAcc = new account();
 	   	$newAcc->name = htmlentities($_POST['name']);
 	   	$newAcc->username = htmlentities($_POST['user']);
-			$newAcc->email = htmlentities($_POST['email']);
-			$newAcc->password = htmlentities($_POST['pass']);
-			$accounts []= $newAcc;
+		$newAcc->email = htmlentities($_POST['email']);
+		$newAcc->password = htmlentities($_POST['pass']);
+		$accounts []= $newAcc;
 	   	$fh = fopen("accounts.json", 'w');
         	if($fh === false)
-            die("Failed to open accounts.json for writing.");
+            	die("Failed to open accounts.json for writing.");
         	else{
-            fwrite($fh, json_encode($accounts));
-            fclose($fh);
+            	fwrite($fh, json_encode($accounts));
+            	fclose($fh);
         	}
 	   }
 	}
