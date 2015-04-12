@@ -33,10 +33,6 @@ If you'd like to create an account login here:<br>
 
 <?php
 	if(isset($_POST["register"])){
-	   $newAcc->username = htmlentities($_POST['user']);
-		$newAcc->email = htmlentities($_POST['email']);
-		$newAcc->password = htmlentities($_POST['pass']);
-		$accounts []= $newAcc;
 	   if(empty($_POST['user'])){
       	echo "Enter a username.";
 	   }
@@ -47,6 +43,10 @@ If you'd like to create an account login here:<br>
 	      echo "Enter a password.";
 	   }
 	   else{
+	   	$newAcc->username = htmlentities($_POST['user']);
+			$newAcc->email = htmlentities($_POST['email']);
+			$newAcc->password = htmlentities($_POST['pass']);
+			$accounts []= $newAcc;
 	   	$fh = fopen("accounts.json", 'w');
         	if($fh === false)
             die("Failed to open accounts.json for writing.");
