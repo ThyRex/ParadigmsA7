@@ -1,10 +1,17 @@
 <?php
 ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 session_start();
+
+if(!isset($_SESSION['name'])){
+	$_SESSION['name'];
+}
+if(!isset($_SESSION['email'])){
+	$_SESSION['email'];
+}
+
 class account{
 
 }
-$accounts = array();
 ?>
 <html>
 <body>
@@ -13,7 +20,7 @@ $accounts = array();
 <br>
 
 If you have an existing account login here:<br>
-<form method = "post" action = "index.php" name = "loginForm">
+<form method = "post" action = "<?php print($_SERVER['SCRIPT_NAME'])?>" name = "loginForm">
    Username: <input type = "text" name = "user1" /><br>
    Password: <input type = "password" name = "pass1" /><br>
 <input type = "submit" name = "login" value = "Login!" />
@@ -22,7 +29,8 @@ If you have an existing account login here:<br>
 
 
 If you'd like to create an account login here:<br>
-<form method = "post" action = "index.php" name = "createForm">
+<form method = "post" action = "<?php print($_SERVER['SCRIPT_NAME'])?>" name = "createForm">
+	Name: <input type = "text" name = "name" /><br>
    Username: <input type = "text" name = "user" /><br>
    Email: <input type = "text" name = "email" /> <br>
    Password: <input type = "password" name = "pass" /><br>
@@ -32,8 +40,13 @@ If you'd like to create an account login here:<br>
 </form>
 
 <?php
+$accounts = array();
+$accounts_array = json_decode(file_get_contents("accounts.json"));
 	if(isset($_POST["register"])){
-	   if(empty($_POST['user'])){
+		if(empty($_POST['name'])){
+			echo "Enter a name.";
+		}
+	   else if(empty($_POST['user'])){
       	echo "Enter a username.";
 	   }
 	   else if(empty($_POST['email'])){
@@ -43,6 +56,8 @@ If you'd like to create an account login here:<br>
 	      echo "Enter a password.";
 	   }
 	   else{
+	   	$newAcc = new account();
+	   	$newAcc->name = htmlentities($_POST['name']);
 	   	$newAcc->username = htmlentities($_POST['user']);
 			$newAcc->email = htmlentities($_POST['email']);
 			$newAcc->password = htmlentities($_POST['pass']);
